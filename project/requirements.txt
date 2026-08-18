@@ -1,0 +1,11 @@
+# Pinned to exact versions for reproducible builds. Use `pip install --upgrade`
+# to update, then re-pin.
+requests==2.32.3
+pandas==2.2.3
+sqlalchemy==2.0.35
+psycopg[binary]==3.2.4
+pgvector==0.2.5
+pydantic-settings==2.7.1
+openai==1.82.0            # used only by the vector builder stage (NVIDIA NIM API)
+alembic==1.14.1            # versioned schema migrations (run against Supabase's direct connection)
+tenacity==9.0.0            # retry/backoff for transient pooler/network errors

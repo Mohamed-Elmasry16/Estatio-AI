@@ -1,0 +1,4 @@
+# Dev/CI dependencies — not needed in the runtime Docker image.
+-r requirements.txt
+pytest==8.3.4
+ruff==0.11.12

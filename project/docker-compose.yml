@@ -1,0 +1,25 @@
+# Runs the pipeline against Supabase (or whatever DATABASE_URL points at in
+# your .env). There is no local Postgres service here by default — Supabase
+# IS the database now. For fully offline local dev/testing without touching
+# Supabase, see docker-compose.dev.yml.
+services:
+  migrate:
+    build: .
+    env_file: .env
+    command: ["alembic", "upgrade", "head"]
+
+  pipeline:
+    build: .
+    env_file: .env
+    command: ["python", "data_pipeline.py"]
+    volumes:
+      - ./raw_data:/app/raw_data
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+  build-vectors:
+    build: .
+    env_file: .env
+    command: ["python", "build_vectors.py"]
+    profiles: ["vectors"]  # opt-in: docker compose --profile vectors up build-vectors

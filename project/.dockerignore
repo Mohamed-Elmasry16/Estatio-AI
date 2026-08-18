@@ -1,0 +1,19 @@
+# Secrets — never bake into an image
+.env
+.env.*
+
+# Keep the template in the image context (it's harmless)
+!.env.example
+
+# VCS / CI
+.git/
+.github/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Tests and data aren't needed in the runtime image
+tests/
+raw_data/

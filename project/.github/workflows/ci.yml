@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Byte-compile (catches syntax errors early)
+        run: python -m compileall -q src scripts *.py
+
+      - name: Lint (ruff)
+        run: python -m ruff check src scripts tests *.py
+
+      - name: Run tests
+        # All 31 tests are pure logic (matcher, split pass, silver transform,
+        # document builder) — no live database needed, so this needs no
+        # DATABASE_URL.
+        run: pytest tests/ -v

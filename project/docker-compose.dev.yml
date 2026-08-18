@@ -1,0 +1,28 @@
+# Optional: a local Postgres+pgvector for offline dev/testing, so you're not
+# hitting Supabase on every test run. Not used by default.
+#
+#   docker compose -f docker-compose.dev.yml up -d
+#   DATABASE_URL=postgresql+psycopg://postgres:postgres@localhost:5432/real_estate \
+#     python -c "from src.db import init_db; init_db()"
+#
+# This talks directly to Postgres (no pooler in front of it), so a single
+# DATABASE_URL is fine locally — database_migration_url isn't needed.
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: real_estate
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres_data:

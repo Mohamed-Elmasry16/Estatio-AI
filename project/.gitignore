@@ -1,0 +1,19 @@
+# Secrets — never commit
+.env
+.env.*
+
+# Keep the template tracked
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+build/
+dist/
+
+# Data / generated artifacts
+raw_data/
+venv/
+.venv/
